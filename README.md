@@ -1,3 +1,2 @@
-# An Database written in go.
-
-### Currently in Early Development.
+# MintedDB
+### An non-production ready database written in golang.
