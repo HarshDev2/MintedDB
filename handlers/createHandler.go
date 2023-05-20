@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"time"
+	"github.com/harshdev2/db/utils"
 )
 
 func CreateHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +41,28 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	data, ok := jsonData["data"].(map[string]interface{})
+	if !ok {
+		http.Error(w, "Invalid Request", http.StatusBadRequest)
+		return
+	}
+
+	currentTime := time.Now().Unix();
+
+	id := utils.GenerateID();
+
+	fmt.Println(id)
+
+	data["_id"] = id;
+	data["createdAt"] = currentTime;
+	data["updatedAt"] = currentTime;
+
+	fmt.Println(data)
+
 	collectionName := jsonData["collection"].(string)
+
+	fmt.Println(collectionName)
+
 	err = os.MkdirAll("./data/"+collectionName, 0755)
 	if err != nil {
 		http.Error(w, "Failed to create collection directory", http.StatusInternalServerError)
@@ -55,7 +79,7 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		dataBytes, err := json.Marshal([]interface{}{jsonData["data"]})
+		dataBytes, err := json.Marshal([]interface{}{data})
 		if err != nil {
 			http.Error(w, "Failed to serialize data", http.StatusInternalServerError)
 			return
@@ -75,48 +99,45 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		defer file.Close()
-	
+
 		existingData, err := io.ReadAll(file)
 		if err != nil {
 			http.Error(w, "Failed to read data from file", http.StatusInternalServerError)
 			return
 		}
-	
+
 		var existingArray []interface{}
 		err = json.Unmarshal(existingData, &existingArray)
 		if err != nil {
 			http.Error(w, "Failed to parse existing data", http.StatusInternalServerError)
 			return
 		}
-	
-		existingArray = append(existingArray, jsonData["data"])
-	
+
+		existingArray = append(existingArray, data)
+
 		newDataBytes, err := json.Marshal(existingArray)
 		if err != nil {
 			http.Error(w, "Failed to serialize data", http.StatusInternalServerError)
 			return
 		}
-	
+
 		err = file.Truncate(0)
 		if err != nil {
 			http.Error(w, "Failed to truncate data file", http.StatusInternalServerError)
 			return
 		}
-	
+
 		_, err = file.Seek(0, 0)
 		if err != nil {
 			http.Error(w, "Failed to seek data file", http.StatusInternalServerError)
 			return
 		}
-	
+
 		_, err = file.Write(newDataBytes)
 		if err != nil {
 			http.Error(w, "Failed to write data to file", http.StatusInternalServerError)
 			return
 		}
 	}
-	
-	
-	
 
 }
