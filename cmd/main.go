@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/harshdev2/db/handlers"
 	"net/http"
 	"os"
+	"github.com/harshdev2/db/handlers"
+	"github.com/harshdev2/db/panel/handlers"
 )
 
 func main() {
@@ -22,6 +23,7 @@ func main() {
 	http.HandleFunc("/api/create", handlers.CreateHandler)
 	http.HandleFunc("/api/find", handlers.FindHandler)
 	http.HandleFunc("/api/delete", handlers.DeleteHandler)
+	http.HandleFunc("/", panelhandlers.PanelHandler)
 	
 	// Start the server
 	fmt.Println("Server started on port 8080")
