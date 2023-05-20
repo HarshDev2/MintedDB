@@ -6,8 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MintedDB</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                clifford: '#da373d',
+              }
+            }
+          }
+        }
+      </script>
 </head>
 <body>
-    
+    <div id="app"></div>
+    <script>
+        let app = document.getElementById("app");
+        
+        let data = [
+            {
+                name: "hello"
+            },
+            {
+                name: "hello"
+            }
+        ]
+
+        for(i in data){
+            let element = document.createElement("div");
+            element.innerText = data[i].name;
+
+            app.appendChild(element);
+        }
+    </script>
 </body>
 </html>
