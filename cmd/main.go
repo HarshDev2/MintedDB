@@ -21,6 +21,7 @@ func main() {
 	http.HandleFunc("/status", handlers.StatusHandler)
 	http.HandleFunc("/api/create", handlers.CreateHandler)
 	http.HandleFunc("/api/find", handlers.FindHandler)
+	http.HandleFunc("/api/delete", handlers.DeleteHandler)
 	
 	// Start the server
 	fmt.Println("Server started on port 8080")
