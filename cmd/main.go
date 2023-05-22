@@ -11,20 +11,30 @@ import (
 )
 
 func main() {
-	currentPath, errt := utils.GetCurrentPath();
-	
-	if errt != nil {
+	currentPath, err := utils.GetCurrentPath()
+
+	if err != nil {
 		fmt.Println("Something went wrong, try running the exe again.")
 		return
 	}
-	_, err := os.Stat(currentPath + "data")
 
+	_, err = os.Stat(currentPath + "data")
 	if err != nil {
-		err := os.Mkdir(currentPath + "data", 0755)
+		err := os.Mkdir(currentPath+"data", 0755)
 		if err != nil {
 			fmt.Println(err)
-			return;
+			return
 		}
+	}
+
+	_, err = os.Stat(currentPath + "data/users.json")
+	if err != nil {
+		userFile, err := os.Create(currentPath + "data/users.json")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer userFile.Close()
 	}
 
 	http.HandleFunc("/api/status", handlers.StatusHandler)
@@ -33,9 +43,8 @@ func main() {
 	http.HandleFunc("/api/find-many", handlers.FindManyHandler)
 	http.HandleFunc("/api/delete", handlers.DeleteHandler)
 	http.HandleFunc("/", panelhandlers.PanelHandler)
-	
+
 	// Start the server
 	fmt.Println("Server started on port 8080")
 	http.ListenAndServe(":8080", nil)
-
 }
