@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -51,17 +50,11 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	id := utils.GenerateID();
 
-	fmt.Println(id)
-
 	data["_id"] = id;
 	data["createdAt"] = currentTime;
 	data["updatedAt"] = currentTime;
 
-	fmt.Println(data)
-
 	collectionName := jsonData["collection"].(string)
-
-	fmt.Println(collectionName)
 
 	err = os.MkdirAll("./data/"+collectionName, 0755)
 	if err != nil {
