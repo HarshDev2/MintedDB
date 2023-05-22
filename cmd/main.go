@@ -22,6 +22,7 @@ func main() {
 	http.HandleFunc("/status", handlers.StatusHandler)
 	http.HandleFunc("/api/create", handlers.CreateHandler)
 	http.HandleFunc("/api/find", handlers.FindHandler)
+	http.HandleFunc("/api/find-many", handlers.FindManyHandler)
 	http.HandleFunc("/api/delete", handlers.DeleteHandler)
 	http.HandleFunc("/", panelhandlers.PanelHandler)
 	
