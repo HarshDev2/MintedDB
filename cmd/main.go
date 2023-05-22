@@ -4,15 +4,23 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
 	"github.com/harshdev2/db/handlers"
 	"github.com/harshdev2/db/panel/handlers"
+	"github.com/harshdev2/db/utils"
 )
 
 func main() {
-	_, err := os.Stat("./data")
+	currentPath, errt := utils.GetCurrentPath();
+	
+	if errt != nil {
+		fmt.Println("Something went wrong, try running the exe again.")
+		return
+	}
+	_, err := os.Stat(currentPath + "data")
 
 	if err != nil {
-		err := os.Mkdir("./data", 0755)
+		err := os.Mkdir(currentPath + "data", 0755)
 		if err != nil {
 			fmt.Println(err)
 			return;
