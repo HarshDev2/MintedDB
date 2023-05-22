@@ -19,7 +19,7 @@ func main() {
 		}
 	}
 
-	http.HandleFunc("/status", handlers.StatusHandler)
+	http.HandleFunc("/api/status", handlers.StatusHandler)
 	http.HandleFunc("/api/create", handlers.CreateHandler)
 	http.HandleFunc("/api/find", handlers.FindHandler)
 	http.HandleFunc("/api/find-many", handlers.FindManyHandler)
