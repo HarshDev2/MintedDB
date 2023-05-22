@@ -5,6 +5,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/harshdev2/db/utils"
 )
 
 func DeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +41,14 @@ func DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	collectionName := jsonData["collection"].(string)
-	filePath := "./data/" + collectionName + "/data.json"
+
+	currentPath, err := utils.GetCurrentPath();
+	
+	if err != nil {
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
+	}
+	
+	filePath := currentPath + "data/" + collectionName + "/data.json"
 
 	_, error := os.Stat(filePath)
 	if error != nil {

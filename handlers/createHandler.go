@@ -56,13 +56,19 @@ func CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 	collectionName := jsonData["collection"].(string)
 
-	err = os.MkdirAll("./data/"+collectionName, 0755)
+	currentPath, err := utils.GetCurrentPath();
+	
+	if err != nil {
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
+	}
+
+	err = os.MkdirAll(currentPath + "data/" + collectionName, 0755)
 	if err != nil {
 		http.Error(w, "Failed to create collection directory", http.StatusInternalServerError)
 		return
 	}
 
-	filePath := "./data/" + collectionName + "/data.json"
+	filePath := currentPath + "data/" + collectionName + "/data.json"
 
 	_, err = os.Stat(filePath)
 	if err != nil {

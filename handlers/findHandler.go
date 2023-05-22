@@ -31,7 +31,13 @@ func FindHandler(w http.ResponseWriter, r *http.Request) {
 	} else if jsonData["queryData"] == nil {
 		http.Error(w, "Invalid Request", http.StatusBadRequest)
 	} else {
-		filePath := "data/" + jsonData["collection"].(string) + "/data.json"
+		currentPath, err := utils.GetCurrentPath();
+	
+	if err != nil {
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
+	}
+
+		filePath := currentPath + "data/" + jsonData["collection"].(string) + "/data.json"
 
 		file, err := os.Open(filePath)
 		if err != nil {
