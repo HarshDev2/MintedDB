@@ -42,6 +42,7 @@ func main() {
 	http.HandleFunc("/api/find", handlers.FindHandler)
 	http.HandleFunc("/api/find-many", handlers.FindManyHandler)
 	http.HandleFunc("/api/delete", handlers.DeleteHandler)
+	http.HandleFunc("/api/update", handlers.UpdateHandler)
 	http.HandleFunc("/", panelhandlers.PanelHandler)
 
 	// Start the server
